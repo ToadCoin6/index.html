@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime Lion Coin Flip</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+      font-family: 'Arial', sans-serif;
+      background: url('/mnt/data/A_digital_anime-style_illustration_depicts_a_majes.png') no-repeat center center/cover;
+    }
+
+    #flipBtn {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 24px;
+      font-size: 18px;
+      background-color: #d4a24a;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      transition: background-color 0.3s ease;
+    }
+
+    #flipBtn:hover {
+      background-color: #b98c3b;
+    }
+
+    #coin {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      bottom: 160px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle at center, #d4a24a 40%, #b58634 100%);
+      border-radius: 50%;
+      box-shadow: inset 0 0 6px rgba(0,0,0,0.3), 0 0 10px rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: black;
+      font-weight: bold;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="coin">Toad</div>
+  <button id="flipBtn">FLIP</button>
+
+  <script>
+    const coin = document.getElementById('coin');
+    const flipBtn = document.getElementById('flipBtn');
+
+    flipBtn.addEventListener('click', () => {
+      // Reset coin position
+      gsap.set(coin, {rotationX: 0, rotationY: 0});
+
+      // Lion touch (simulate with a short scale pulse)
+      gsap.fromTo(coin, {scale: 0.8}, {scale: 1.2, duration: 0.2, yoyo: true, repeat: 1});
+
+      // Coin flip animation
+      const duration = 2;
+      const isHeads = Math.random() < 0.5;
+      const resultText = isHeads ? 'Toad' : 'Panther';
+
+      gsap.to(coin, {
+        y: "-300px",
+        rotationX: 1080,
+        rotationY: 1080,
+        duration: duration,
+        ease: "power2.inOut",
+        onComplete: () => {
+          // Spin on ground after landing
+          gsap.to(coin, {
+            rotationZ: 360,
+            duration: 1,
+            ease: "power2.out",
+            onComplete: () => {
+              coin.textContent = resultText;
+            }
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
